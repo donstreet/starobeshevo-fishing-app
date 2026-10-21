@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Старобешевское водохранилище</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  :root{
+    --bg: var(--tg-bg, #ffffff);
+    --text: var(--tg-text, #222222);
+    --hint: var(--tg-hint, #707579);
+    --card: var(--tg-secondary, #f1f3f5);
+    --accent: var(--tg-accent, #2481cc);
+    --btn-text: var(--tg-btn-text, #ffffff);
+    --red-bg:#fdecea; --red-bd:#e53935;
+    --yel-bg:#fff4e5; --yel-bd:#f0a040;
+    --grn-bg:#e8f5e9; --grn-bd:#43a047;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,system-ui,Roboto,sans-serif;background:var(--bg);color:var(--text);font-size:15px}
+  header{padding:12px 14px 6px;font-weight:600;font-size:17px}
+  .wrap{padding:0 12px 24px}
+  .seg{display:flex;background:var(--card);border-radius:10px;padding:3px;gap:3px;margin-bottom:10px}
+  .seg button{flex:1;border:0;background:transparent;color:var(--text);padding:8px;border-radius:8px;font-size:14px;cursor:pointer}
+  .seg button.on{background:var(--accent);color:var(--btn-text)}
+  label{display:block;font-size:13px;color:var(--hint);margin:10px 0 4px}
+  select,input[type=range]{width:100%}
+  select{font-size:16px;padding:9px;border-radius:8px;border:1px solid #0002;background:var(--bg);color:var(--text)}
+  .chips{display:flex;overflow-x:auto;gap:6px;padding-bottom:4px}
+  .chip{flex:0 0 auto;border:1px solid #0003;background:var(--bg);color:var(--text);border-radius:16px;padding:6px 12px;font-size:14px;cursor:pointer}
+  .chip.on{background:var(--accent);color:var(--btn-text);border-color:var(--accent)}
+  .card{background:var(--card);border-radius:12px;padding:10px 12px;margin:8px 0}
+  .alert{border-left:4px solid;border-radius:8px;padding:8px 10px;margin:6px 0;font-size:14px}
+  .alert.bad{background:var(--red-bg);border-color:var(--red-bd);color:#222}
+  .alert.warn{background:var(--yel-bg);border-color:var(--yel-bd);color:#222}
+  .alert.ok{background:var(--grn-bg);border-color:var(--grn-bd);color:#222}
+  .row{margin:4px 0}
+  .hint{color:var(--hint);font-size:12px}
+  .tag{display:inline-block;border-radius:6px;padding:2px 7px;font-size:12px;margin-top:4px}
+  .t-boat_pred{background:#c8e6c9;color:#1b5e20}
+  .t-shore{background:#bbdefb;color:#0d47a1}
+  .t-hazard{background:#ffcdd2;color:#b71c1c}
+  .t-restricted{background:#fff59d;color:#5d4037}
+  .t-unknown{background:#eceff1;color:#37474f}
+  .disclaimer{font-size:12px;color:var(--hint);margin:6px 0 10px}
+  .search{width:100%;font-size:16px;padding:9px;border-radius:8px;border:1px solid #0002;background:var(--bg);color:var(--text);margin-bottom:8px}
+</style>
+</head>
+<body>
+<header id="title">Водохранилище</header>
+<div class="wrap">
+  <div class="seg" id="tabs">
+    <button data-tab="advice" class="on">Что ловить</button>
+    <button data-tab="spots">Точки</button>
+  </div>
+
+  <section id="advice">
+    <div class="seg" id="mode">
+      <button data-mode="shore" class="on">С берега</button>
+      <button data-mode="boat">С лодки</button>
+    </div>
+
+    <label>Рыба</label>
+    <div class="chips" id="fish"></div>
+
+    <label>Месяц</label>
+    <div class="chips" id="month"></div>
+
+    <label>Температура воды: <b id="tempVal">15</b> °C</label>
+    <input type="range" id="temp" min="0" max="35" value="15">
+
+    <div id="alerts"></div>
+    <div id="advice-card"></div>
+  </section>
+
+  <section id="spots" hidden>
+    <input class="search" id="search" placeholder="Поиск точки">
+    <div id="spot-list"></div>
+  </section>
+
+  <div class="disclaimer" id="disclaimer"></div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
