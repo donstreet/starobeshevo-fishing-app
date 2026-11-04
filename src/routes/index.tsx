@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
-import { BookOpen, Compass, Info, Map as MapIcon } from 'lucide-react'
+import { BookOpen, Compass, Info, Map as MapIcon, TentTree } from 'lucide-react'
 
 import { FishView } from '@/components/app/FishView'
 import { InfoView } from '@/components/app/InfoView'
 import { MapView } from '@/components/app/MapView'
 import { PickerView } from '@/components/app/PickerView'
+import { RestView } from '@/components/app/RestView'
 import { SpotSheet } from '@/components/app/SpotSheet'
 import { RESERVOIR, SEASONS, currentSeason, type FishId, type Spot } from '@/data/reservoir'
 import { haptic, initTelegram, tg } from '@/lib/telegram'
@@ -15,13 +16,14 @@ export const Route = createFileRoute('/')({
   component: Home,
 })
 
-type Tab = 'picker' | 'map' | 'fish' | 'info'
+type Tab = 'picker' | 'map' | 'fish' | 'info' | 'rest'
 
 const TABS: { id: Tab; label: string; icon: typeof MapIcon }[] = [
   { id: 'picker', label: 'Подбор', icon: Compass },
   { id: 'map', label: 'Карта', icon: MapIcon },
   { id: 'fish', label: 'Рыба', icon: BookOpen },
   { id: 'info', label: 'Водоём', icon: Info },
+  { id: 'rest', label: 'Отдых', icon: TentTree },
 ]
 
 const TITLES: Record<Tab, string> = {
@@ -29,6 +31,7 @@ const TITLES: Record<Tab, string> = {
   map: 'Карта мест',
   fish: 'Справочник рыбы',
   info: 'О водоёме',
+  rest: 'Где отдохнуть',
 }
 
 function Home() {
@@ -94,10 +97,11 @@ function Home() {
           <FishView openFish={openFish} onToggle={setOpenFish} onShowOnMap={showOnMap} />
         )}
         {tab === 'info' && <InfoView />}
+        {tab === 'rest' && <RestView />}
       </main>
 
       <nav className="pb-safe fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/90 px-2 pt-2 backdrop-blur-lg">
-        <div className="mx-auto grid max-w-md grid-cols-4">
+        <div className="mx-auto grid max-w-md grid-cols-5">
           {TABS.map(({ id, label, icon: Icon }) => (
             <button
               key={id}
