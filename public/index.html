@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Клёвое место — рыбалка в ДНР</title>
+  <meta name="description" content="Справочник рыболова: водоёмы ДНР, рыба, прикормки, карты мест и чат рыбаков.">
+  <meta name="theme-color" content="#0b1d26">
+
+  <script src="telegram-web-app.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">🎣</div>
+      <div>
+        <h1>Клёвое место</h1>
+        <span class="sub">Рыбалка в ДНР</span>
+      </div>
+    </div>
+    <div class="weather-widget" id="heroWeather">
+      <span class="ico">🌊</span><span><span class="t">···</span><span class="d">Погода</span></span>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="hero">
+      <h2 id="heroTitle">Куда поехать на рыбалку?</h2>
+      <p id="heroSubtitle">Карточки водоёмов ДНР: геолокация, виды рыбы, прикормки и насадки по сезонам, интерактивная карта мест на Старобешевском водохранилище и чат рыбаков.</p>
+    </section>
+
+    <div class="layout">
+
+      <div class="main-col">
+        <div class="section-title">
+          <h3>Водоёмы</h3>
+          <span class="count" id="reservoirCount">— водоёмов</span>
+        </div>
+        <div class="grid" id="reservoirGrid"></div>
+      </div>
+
+      <aside class="sidebar">
+
+        <div class="panel chat-card">
+          <h3>💬 Чат рыбаков</h3>
+          <p>Отчёты, уловы, обсуждение водоёмов — общий чат в Telegram.</p>
+          <a class="tg-btn" id="chatBtn" data-chat-link href="https://t.me/ribalka_chat/1" target="_blank" rel="noopener">
+            <span class="ico">✈️</span> Открыть чат в Telegram
+          </a>
+        </div>
+
+        <div class="panel">
+          <h3>📋 Объявления</h3>
+
+          <div class="ads-list" id="adsList">
+            <div class="ad-empty">Загрузка…</div>
+          </div>
+
+          <div class="ad-pricing-box" id="adPricingBox">
+            <div class="ad-pricing-title">💰 Размещение объявления</div>
+            <div class="ad-pricing-text">
+              <span id="adPriceText">100 ₽</span> за <span id="adDurationText">1 сутки</span> показа на сайте.
+              После отправки формы свяжитесь с администратором для оплаты —
+              объявление опубликуется сразу после подтверждения.
+            </div>
+            <a class="tg-btn tg-btn-admin" href="https://t.me/Vollkofff" target="_blank" rel="noopener" id="contactAdminBtn">
+              <span class="ico">✈️</span> Связаться с администратором
+            </a>
+          </div>
+
+          <form class="ad-form" id="adForm" enctype="multipart/form-data">
+            <input type="text" id="adTitle" name="title" placeholder="Заголовок объявления" required maxlength="80">
+            <textarea id="adText" name="text" placeholder="Текст объявления" rows="3" required maxlength="500"></textarea>
+            <input type="text" id="adContact" name="contact" placeholder="Контакт (телефон / Telegram)" maxlength="80">
+
+            <label class="ad-photo-label" for="adPhoto">
+              <span id="adPhotoLabelText">📷 Прикрепить фото (необязательно)</span>
+              <input type="file" id="adPhoto" name="photo" accept="image/jpeg,image/png,image/webp">
+            </label>
+            <div class="ad-photo-preview hidden" id="adPhotoPreview">
+              <img id="adPhotoPreviewImg" alt="Предпросмотр фото">
+              <button type="button" class="ad-photo-remove" id="adPhotoRemove">✕</button>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-sm" id="adSubmitBtn">Отправить объявление за 100 ₽</button>
+            <div class="ad-submit-msg" id="adSubmitMsg"></div>
+          </form>
+
+          <div class="reservoir-admin-box">
+            <div class="reservoir-admin-text">
+              Вы представляете администрацию водоёма или базы отдыха?
+              Размещение — по договорённости.
+            </div>
+            <a class="btn btn-ghost btn-sm" href="https://t.me/Vollkofff" target="_blank" rel="noopener">
+              Связаться по размещению
+            </a>
+          </div>
+
+        </div>
+
+      </aside>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    Данные собраны из открытых источников (форумы рыбаков, Fishmapia, официальные страницы водоёмов) и носят справочный характер.<br>
+    Перед поездкой уточняйте актуальные правила, доступ и безопасность маршрута на месте.
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="fish-guide.js"></script>
+  <script src="ads.js"></script>
+  <script src="telegram.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

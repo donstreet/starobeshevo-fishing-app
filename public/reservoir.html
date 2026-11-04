@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Клёвое место — водоём</title>
+  <meta name="theme-color" content="#0b1d26">
+
+  <script src="telegram-web-app.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <a class="brand" href="index.html" style="text-decoration:none;">
+      <div class="logo">🎣</div>
+      <div>
+        <h1>Клёвое место</h1>
+        <span class="sub">← Все водоёмы</span>
+      </div>
+    </a>
+  </header>
+
+  <main class="container">
+    <div class="layout">
+      <div class="main-col" id="resDetail">
+        <p style="color:var(--text-dim);">Загрузка…</p>
+      </div>
+
+      <aside class="sidebar">
+        <div class="panel chat-card">
+          <h3>💬 Чат рыбаков</h3>
+          <p>Спросите про этот водоём прямо в общем чате.</p>
+          <a class="tg-btn" data-chat-link href="https://t.me/ribalka_chat/1" target="_blank" rel="noopener">
+            <span class="ico">✈️</span> Открыть чат в Telegram
+          </a>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer">
+    Данные собраны из открытых источников и носят справочный характер.<br>
+    Перед поездкой уточняйте актуальные правила, доступ и безопасность маршрута на месте.
+  </footer>
+
+  <div class="sheet-backdrop" id="sheetBackdrop"></div>
+  <div class="sheet" id="spotSheet"></div>
+
+  <script src="data.js"></script>
+  <script src="fish-guide.js"></script>
+  <script src="ads.js"></script>
+  <script src="telegram.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

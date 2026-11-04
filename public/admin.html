@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Админ-панель — Клёвое место</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .admin-wrap { max-width: 920px; margin: 0 auto; padding: 20px 16px 60px; }
+    .login-box {
+      max-width: 360px; margin: 80px auto; background: var(--card);
+      border: 1px solid var(--border); border-radius: var(--radius); padding: 24px;
+    }
+    .login-box h2 { margin-bottom: 14px; font-size: 18px; }
+    .login-box input {
+      width: 100%; background: var(--bg-soft); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text); padding: 10px 12px;
+      font-size: 14px; margin-bottom: 10px;
+    }
+    .login-box .err { color: var(--red); font-size: 12.5px; margin-bottom: 10px; min-height: 16px; }
+    .admin-tabs { display: flex; gap: 8px; margin: 20px 0; flex-wrap: wrap; }
+    .admin-tab-panel { display: none; }
+    .admin-tab-panel.active { display: block; }
+    .field-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+    .field-row label { font-size: 12px; color: var(--text-dimmer); }
+    .field-row input, .field-row textarea, .field-row select {
+      background: var(--bg-soft); border: 1px solid var(--border); border-radius: var(--radius-sm);
+      color: var(--text); padding: 9px 11px; font-size: 13.5px; font-family: var(--font-body);
+    }
+    .field-row textarea { resize: vertical; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .admin-list-item {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; gap: 10px; align-items: flex-start;
+    }
+    .admin-list-item .ali-body { flex: 1; min-width: 0; }
+    .admin-list-item .ali-title { font-weight: 600; font-size: 14px; margin-bottom: 3px; }
+    .admin-list-item .ali-meta { font-size: 11.5px; color: var(--text-dimmer); }
+    .admin-list-item .ali-actions { display: flex; gap: 6px; flex-shrink: 0; flex-wrap: wrap; }
+    .icon-btn {
+      width: 30px; height: 30px; border-radius: 8px; background: var(--bg-soft);
+      border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+    }
+    .icon-btn.danger:hover { background: rgba(255,107,107,0.15); border-color: var(--red); }
+    .icon-btn.edit:hover { background: rgba(53,194,224,0.15); border-color: var(--accent); }
+    .icon-btn.confirm:hover { background: rgba(62,207,142,0.15); border-color: var(--green); }
+    .toast {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background: var(--card); border: 1px solid var(--accent); color: var(--text);
+      padding: 10px 18px; border-radius: 999px; font-size: 13px; z-index: 200;
+      opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
+    }
+    .toast.show { opacity: 1; }
+    .toast.err { border-color: var(--red); }
+    .logout-btn { font-size: 12px; color: var(--text-dimmer); }
+    .ads-subtabs { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+    .ads-subtab-btn {
+      font-size: 12px; padding: 6px 12px; border-radius: 999px;
+      background: var(--bg-soft); border: 1px solid var(--border); color: var(--text-dim);
+    }
+    .ads-subtab-btn.active { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+    .ad-status-badge {
+      display: inline-block; font-size: 10.5px; padding: 3px 9px; border-radius: 999px; margin-bottom: 6px;
+    }
+    .ad-status-badge.pending_payment { background: rgba(242,201,76,0.14); color: var(--yellow); }
+    .ad-status-badge.published { background: rgba(62,207,142,0.14); color: var(--green); }
+    .ad-status-badge.expired { background: rgba(127,160,168,0.14); color: var(--text-dimmer); }
+    .ad-status-badge.rejected { background: rgba(255,107,107,0.14); color: var(--red); }
+    .admin-ad-photo { width: 72px; height: 72px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
+    .ad-row-with-photo { display: flex; gap: 10px; }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">🛠️</div>
+      <div>
+        <h1>Админ-панель</h1>
+        <span class="sub">Клёвое место</span>
+      </div>
+    </div>
+    <div id="logoutWrap" class="hidden">
+      <button class="back-btn logout-btn" id="logoutBtn">Выйти</button>
+    </div>
+  </header>
+
+  <div class="login-box" id="loginBox">
+    <h2>Вход для администратора</h2>
+    <div class="err" id="loginErr"></div>
+    <input type="password" id="loginPassword" placeholder="Пароль администратора" autocomplete="current-password">
+    <button class="btn btn-primary" id="loginBtn" style="width:100%;">Войти</button>
+  </div>
+
+  <div class="admin-wrap hidden" id="adminApp">
+
+    <div class="admin-tabs">
+      <button class="tab-btn active" data-admintab="home">Главная страница</button>
+      <button class="tab-btn" data-admintab="ads">Объявления</button>
+      <button class="tab-btn" data-admintab="reservoirs">Водоёмы</button>
+    </div>
+
+    <!-- ===== Вкладка: Главная страница ===== -->
+    <div class="admin-tab-panel active" id="admintab-home">
+      <div class="panel">
+        <h3>Текст на главной странице</h3>
+        <div class="field-row">
+          <label>Заголовок (hero)</label>
+          <input type="text" id="heroTitle">
+        </div>
+        <div class="field-row">
+          <label>Подзаголовок (hero)</label>
+          <textarea id="heroSubtitle" rows="3"></textarea>
+        </div>
+        <div class="field-row">
+          <label>Ссылка на чат в Telegram</label>
+          <input type="text" id="telegramChatUrl" placeholder="https://t.me/ribalka_chat/1">
+        </div>
+        <div class="field-row">
+          <label>Ссылка на администратора (для объявлений)</label>
+          <input type="text" id="adminContactUrl" placeholder="https://t.me/Vollkofff">
+        </div>
+        <button class="btn btn-primary" id="saveSettingsBtn">Сохранить</button>
+      </div>
+    </div>
+
+    <!-- ===== Вкладка: Объявления ===== -->
+    <div class="admin-tab-panel" id="admintab-ads">
+
+      <div class="panel">
+        <h3>💰 Ожидают подтверждения оплаты</h3>
+        <p style="font-size:12px;color:var(--text-dimmer);margin-bottom:12px;">
+          Автор связался с вами в Telegram и оплатил 100 ₽? Нажмите "Подтвердить оплату" —
+          объявление опубликуется на 24 часа.
+        </p>
+        <div id="adsPendingList"></div>
+      </div>
+
+      <div class="panel" style="margin-top:16px;">
+        <h3>✅ Опубликованные / истёкшие / отклонённые</h3>
+        <div id="adsOtherList"></div>
+      </div>
+
+      <div class="panel" style="margin-top:16px;">
+        <h3>🏞️ Добавить объявление от администрации водоёма</h3>
+        <p style="font-size:12px;color:var(--text-dimmer);margin-bottom:12px;">
+          Публикуется сразу, без оплаты и без автоматического срока истечения
+          (по договорённости с администрацией водоёма).
+        </p>
+        <div class="field-row">
+          <label>Заголовок</label>
+          <input type="text" id="resAdTitle" maxlength="80">
+        </div>
+        <div class="field-row">
+          <label>Текст</label>
+          <textarea id="resAdText" rows="3" maxlength="500"></textarea>
+        </div>
+        <div class="field-row">
+          <label>Контакт</label>
+          <input type="text" id="resAdContact" maxlength="80">
+        </div>
+        <div class="field-row">
+          <label>Фото (необязательно)</label>
+          <input type="file" id="resAdPhoto" accept="image/jpeg,image/png,image/webp">
+        </div>
+        <button class="btn btn-primary" id="addResAdBtn">Опубликовать</button>
+      </div>
+    </div>
+
+    <!-- ===== Вкладка: Водоёмы ===== -->
+    <div class="admin-tab-panel" id="admintab-reservoirs">
+      <div class="panel">
+        <h3>Список водоёмов</h3>
+        <p style="font-size:12px;color:var(--text-dimmer);margin-bottom:12px;">
+          Для полноценного редактирования сложных полей (рыба, точки на карте, источники)
+          проще отредактировать файл <code>data/reservoirs.json</code> на сервере напрямую.
+        </p>
+        <div id="reservoirsAdminList"></div>
+      </div>
+
+      <div class="panel" style="margin-top:16px;">
+        <h3>Добавить новый водоём (основные поля)</h3>
+        <div class="two-col">
+          <div class="field-row">
+            <label>ID (латиницей, без пробелов)</label>
+            <input type="text" id="newResId" placeholder="например: novyi-vodoem">
+          </div>
+          <div class="field-row">
+            <label>Название</label>
+            <input type="text" id="newResName">
+          </div>
+        </div>
+        <div class="field-row">
+          <label>Короткое описание</label>
+          <input type="text" id="newResShort">
+        </div>
+        <div class="field-row">
+          <label>Расположение (текстом)</label>
+          <input type="text" id="newResLocation">
+        </div>
+        <div class="two-col">
+          <div class="field-row">
+            <label>Широта (lat)</label>
+            <input type="text" id="newResLat" placeholder="47.795744">
+          </div>
+          <div class="field-row">
+            <label>Долгота (lon)</label>
+            <input type="text" id="newResLon" placeholder="38.025312">
+          </div>
+        </div>
+        <div class="field-row">
+          <label>Имя файла фото (в папке img/)</label>
+          <input type="text" id="newResPhoto" placeholder="img/novyi-vodoem.jpg">
+        </div>
+        <button class="btn btn-primary" id="addResBtn">Добавить водоём</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
