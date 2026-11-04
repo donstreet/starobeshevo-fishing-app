@@ -40,11 +40,12 @@ function Home() {
   const [spotFish, setSpotFish] = useState<FishId | null>(null)
   const [mapFish, setMapFish] = useState<FishId | null>(null)
   const [openFish, setOpenFish] = useState<FishId | null>(null)
-  const [userName, setUserName] = useState<string | null>(null)
+  const [userName] = useState<string | null>(
+    () => tg()?.initDataUnsafe?.user?.first_name ?? null,
+  )
 
   useEffect(() => {
     initTelegram('#0b1d26')
-    setUserName(tg()?.initDataUnsafe?.user?.first_name ?? null)
   }, [])
 
   const go = (t: Tab) => {

@@ -68,7 +68,7 @@ function renderChips(container, items, selectedValue, onPick) {
     const btn = el('button', { class: 'chip' + (value === selectedValue ? ' on' : ''), text: label });
     btn.addEventListener('click', () => {
       onPick(value);
-      tg && tg.HapticFeedback && tg.HapticFeedback.selectionChanged();
+      if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
     });
     return btn;
   }));
