@@ -108,7 +108,34 @@
       </aside>
     </div>
 
+    <section class="fish-catalog-section" id="fishCatalog">
+      <div class="fish-catalog-heading">
+        <div>
+          <span class="fish-catalog-kicker">РЫБЫ НАШИХ ВОДОЁМОВ</span>
+          <h3>Виды рыб</h3>
+          <p>Настоящие фотографии, особенности ловли, снасти и сезонные насадки.</p>
+        </div>
+        <span class="fish-catalog-count" id="fishCatalogCount">11 видов</span>
+      </div>
+      <div class="fish-catalog-tools">
+        <input id="fishCatalogSearch" type="search" placeholder="Найти рыбу…" aria-label="Найти рыбу">
+        <div class="fish-catalog-filters">
+          <button type="button" class="active" data-fish-filter="all">Все</button>
+          <button type="button" data-fish-filter="white">Мирная</button>
+          <button type="button" data-fish-filter="predator">Хищники</button>
+        </div>
+      </div>
+      <div class="fish-catalog-grid" id="fishCatalogGrid"></div>
+    </section>
+
   </main>
+
+  <div class="fish-modal-backdrop" id="fishCatalogModal" hidden>
+    <section class="fish-modal" role="dialog" aria-modal="true" aria-label="Карточка рыбы">
+      <button class="fish-modal-close" type="button" aria-label="Закрыть">×</button>
+      <div id="fishCatalogModalContent"></div>
+    </section>
+  </div>
 
   <footer class="footer">
     Данные собраны из открытых источников (форумы рыбаков, Fishmapia, официальные страницы водоёмов) и носят справочный характер.<br>
@@ -120,5 +147,6 @@
   <script src="ads.js"></script>
   <script src="telegram.js"></script>
   <script src="app.js"></script>
+  <script src="fish-catalog.js"></script>
 </body>
 </html>
