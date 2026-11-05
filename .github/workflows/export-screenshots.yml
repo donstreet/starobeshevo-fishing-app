@@ -2,7 +2,8 @@ name: Export original screenshots
 on:
   push:
     paths:
-      - ".github/workflows/export-screenshots.yml"
+      - ".github/workflows/trigger-screenshots.txt"
+  workflow_dispatch:
 permissions:
   contents: read
 jobs:
