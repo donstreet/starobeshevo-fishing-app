@@ -1,0 +1,27 @@
+name: Export original screenshots
+on:
+  push:
+    paths:
+      - ".github/workflows/export-screenshots.yml"
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Package original screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-chatgpt-screenshots
+          path: |
+            Screenshot_20261106_020945_ChatGPT.jpg
+            Screenshot_20261106_021121_ChatGPT.jpg
+            Screenshot_20261106_021323_ChatGPT.jpg
+            Screenshot_20261106_021432_ChatGPT.jpg
+            Screenshot_20261106_021519_ChatGPT.jpg
+            Screenshot_20261106_021601_ChatGPT.jpg
+            Screenshot_20261106_021743_ChatGPT.jpg
+          if-no-files-found: error
+          retention-days: 1
